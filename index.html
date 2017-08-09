@@ -1,0 +1,57 @@
+<html>
+<head>
+	<script src="jquery.js" type="text/javascript"></script>	
+	<script src="cart.js" type="text/javascript"></script>
+	<style>
+		.no-show{
+			display: none;
+		}
+	</style>
+</head>
+<body>
+	<div>
+		<a onClick='get_items()' href='#' target='_self'>View Cart</a>&nbsp; &nbsp;<a onClick='empty_cart()' href='#' target='_self'>Empty Cart</a>
+	</div>
+	<form id='cart_frm' action='process.php' method='post'>
+		<label for='prod_id'>Product ID</label>
+		<input type='text' max='3' name='prod_id' id='prod_id' />
+		<br />
+		<label for='prod_desc'>Product Description</label>
+		<input type='text' name='prod_desc' id='prod_desc' />
+		<br />
+		<label for='qty'>Quantity</label>
+		<input type='text' max='4' name='qty' id='qty' />
+		<br />		
+		<label for='price'>Price</label>
+		<input type='text' max='3' name='price' id='price' />
+		<br />
+		<input type='submit' value='Add to cart' />
+	</form>
+	<div id="result" class='no-show'>
+		<table>
+			<thead>
+				<tr>
+					<th>Product Code</th>
+					<th>Description</th>
+					<th>Quantity</th>
+					<th>Price</th>
+					<th>Actions</th>
+				</tr>
+			</thead>
+			<tbody id="recp_body">
+			<script type="text/javascript">
+				try{		
+					var obj = JSON.parse(localStorage.cart);
+					$.each(obj['jsCart'], function(i, ob) {
+						$("#recp_body").append( "<tr id='" + ob.prod_id + "'><td>" + ob.prod_id + "</td><td>" + ob.prod_desc + "</td><td>" + ob.qty + "</td><td>" + ob.price + "</td><td><a onClick=\"get_item('" + ob.prod_id + "')\" href='#' target='_self'>View</a>&nbsp;&nbsp;<a onClick=\"delete_item(\'" + ob.prod_id + "')\" href='#' target='_self'>Delete</a></td></tr>");
+					});	
+					$("#result").removeClass('no-show');
+				}catch(err){
+					console.log("Error : " + err);
+				}
+			</script>
+			</tbody>
+		</table>
+	</div>
+</body>
+</html>
